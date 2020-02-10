@@ -1,0 +1,19 @@
+uuid: 15f50c4d-7cc4-473a-a564-77898dc02146
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_para_wysiwyg_content
+field_name: field_para_wysiwyg_content
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

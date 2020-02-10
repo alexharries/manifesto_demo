@@ -1,0 +1,19 @@
+uuid: 9d2a1cea-d7a7-45a3-8532-aa410ab69f40
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+id: paragraph.field_para_cta_description
+field_name: field_para_cta_description
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

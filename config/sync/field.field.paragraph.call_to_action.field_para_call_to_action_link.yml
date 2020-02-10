@@ -1,0 +1,23 @@
+uuid: 5421d9da-fc03-42e3-9361-e3281bd4c3fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_para_call_to_action_link
+    - paragraphs.paragraphs_type.call_to_action
+  module:
+    - link
+id: paragraph.call_to_action.field_para_call_to_action_link
+field_name: field_para_call_to_action_link
+entity_type: paragraph
+bundle: call_to_action
+label: 'CTA Button (link)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link
