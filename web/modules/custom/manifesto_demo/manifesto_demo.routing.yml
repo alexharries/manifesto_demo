@@ -1,0 +1,10 @@
+# Based on https://github.com/npinos/drupal8-greenhouse
+manifesto_demo.weather:
+  path: '/manifesto-demo/weather/{postcode}'
+  defaults:
+    _controller: '\Drupal\manifesto_demo\Controller\WeatherAPIController::get_weather'
+    _title: 'Get weather'
+  requirements:
+    _access: TRUE
+  options:
+    no_cache: TRUE

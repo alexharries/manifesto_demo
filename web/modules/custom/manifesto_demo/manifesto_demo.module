@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Contains manifesto_demo.module.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\Entity\User;
+
+/**
+ * The path from which we serve weather information.
+ */
+const MANIFESTO_DEMO_WEATHER_CALLBACK_PATH = '/manifesto-demo/weather';
+
+/**
+ * Implements hook_help().
+ */
+function manifesto_demo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the manifesto_demo module.
+    case 'help.page.manifesto_demo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Little bits and bobs for the Manifesto coding test.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function manifesto_demo_theme() {
+  return [
+    'manifesto_demo' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function manifesto_demo_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Task 2: editor experience/permissions.
+  if ($form_id == 'node_article_form') {
+    if (!User::load(\Drupal::currentUser()->id())->hasRole('administrator')) {
+      $form['title']['widget'][0]['value']['#description'] = FieldFilteredMarkup::create(t('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'));
+    }
+  }
+}
+
+// Task 3: implement a Json menu callback.
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * @param $variables
+ */
+function manifesto_demo_preprocess_node(&$variables) {
+  // Task 4: add postcode weather-checker-thinger.
+  $node = $variables['node'];
+
+  if ($node->bundle() == 'article') {
+    // Get article postcode.
+    $article_postcode =  $node->field_article_postcode->getString();
+
+    if (!empty($article_postcode)) {
+      $variables['#attached']['library'][] = 'manifesto_demo/weather';
+
+      // Get a unique ID for the weather elephant.
+      $article_weather_div_id = Html::getUniqueId('manifesto_demo_article_weather');
+
+      // Add the callback URL, postcode, and element ID to drupalSettings.
+      $host = \Drupal::request()->getSchemeAndHttpHost();
+      $callback_url = $host . MANIFESTO_DEMO_WEATHER_CALLBACK_PATH;
+
+      $variables['#attached']['drupalSettings']['manifestoDemo']['manifestoFunction'] = __FUNCTION__;
+      $variables['#attached']['drupalSettings']['manifestoDemo']['callbackURL'] = $callback_url;
+      $variables['#attached']['drupalSettings']['manifestoDemo']['postcode'] = $article_postcode;
+      $variables['#attached']['drupalSettings']['manifestoDemo']['articleWeatherDivID'] = $article_weather_div_id;
+      $variables['#attached']['drupalSettings']['manifestoDemo']['articleWeatherElephantIdentifier'] = 'article[about="/node/' . $node->id() . '"] div.node__content';
+    }
+  }
+}

@@ -1,0 +1,7 @@
+name: 'Manifesto Demo'
+type: module
+description: 'Little bits and bobs for the Manifesto coding test.'
+core: 8.x
+package: 'Manifesto'
+dependencies:
+  - paragraphs
